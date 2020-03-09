@@ -1,0 +1,92 @@
+int row_a = int(a / N);                           /*分别计算出a和b的行列数*/
+    int row_b = int(b / N);
+    int col_a = a % N;
+    int col_b = b % N;
+
+
+for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < N; j++)              /*将迷宫各个结点的id值赋给二位数组*/
+            {
+                matrix[i][j] = i * N + j;
+            }
+        }                                            /*对a和b的所在相对位置不同将情况分类*/
+        if (abs(a - b) <= N - 1)                     /*a和b在同一行的情况下*/
+        {
+            for (int m = col_a; m <= col_b; m++)
+                path1.push_back(matrix[row_a][m]);
+        }
+        else
+        {
+
+            if (col_a <= 1 && col_b <= 1)
+            {
+                if (col_a != col_b)                        /*a和b均在左且不同列*/
+                {
+                    path1.push_back(a);
+                    path1.push_back(matrix[row_a][abs(col_a - 1)]);
+                    for (int m = row_a; m <= row_b; m++)
+                        path1.push_back(matrix[m][abs(col_a - 1)]);
+                }
+                else if (col_a == col_b)                   /*a和b同列的情况下*/
+                {
+                    for (int m = row_a; m <= row_b; m++)
+                        path1.push_back(matrix[m][col_a]);
+                }
+            }
+            if (col_a == 0 && col_b > 1)                  /*a在0列且b在a的右下角*/
+            {
+                for (int m = row_a; m <= row_b; m++)
+                    path1.push_back(matrix[m][0]);
+                for (int n = 1; n <= col_b; n++)
+                    path1.push_back(matrix[row_b][n]);
+                path2.push_back(a);
+                path2.push_back(matrix[row_a][1]);
+                for (int m = row_a+1; m <= row_b; m++)
+                    path2.push_back(matrix[m][1]);
+                for (int n = 2; n <= col_b; n++)
+                    path2.push_back(matrix[row_b][n]);
+            }
+            if (col_a == 1 && col_b > 1)                /*a在1列且b在a的右下角*/
+            {
+                for (int m = row_a; m <= row_b; m++)
+                    path1.push_back(matrix[m][col_a]);
+                for (int n = col_a + 1; n <= col_b; n++)
+                    path1.push_back(matrix[row_b][n]);
+
+            }
+            if (col_a > 1 && col_b <= 1)                  /*a在b的右上角的情况下*/
+            {
+                if (col_b == 1)                           /*b为1列*/
+                {
+                    for(int m=col_a; m>=col_b; m--)
+                        path1.push_back(matrix[row_a][m]);
+                    for (int n = row_a + 1; n <= row_b; n++)
+                        path1.push_back(matrix[n][col_b]);
+                }
+                else                                      /*b在0列*/
+                {
+                    for (int m = col_a; m >= col_b; m--)
+                        path1.push_back(matrix[row_a][m]);
+                    for (int n = row_a + 1; n <= row_b; n++)
+                        path1.push_back(matrix[n][col_b]);
+                    for (int m = col_a; m >= col_b+1; m--)
+                        path2.push_back(matrix[row_a][m]);
+                    for (int n = row_a + 1; n <= row_b; n++)
+                        path2.push_back(matrix[n][col_b+1]);
+                    path2.push_back(b);
+                }
+            }
+            if (col_a > 1 && col_b > 1 )                 /*a和b均在1列右方的情况下*/
+            {
+                for (int m = col_a; m >= 1; m--)
+                    path1.push_back(matrix[row_a][m]);
+                for (int n = row_a + 1; n <= row_b; n++)
+                    path1.push_back(matrix[n][1]);
+                for (int q = 2; q <= col_b; q++)
+                    path1.push_back(matrix[row_b][q]);
+
+
+            }
+
+        }
